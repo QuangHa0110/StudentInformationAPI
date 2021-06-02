@@ -1,0 +1,12 @@
+
+# DATABASE
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/students_information
+    username: postgres
+    password: 0110quangha@
+  
+# JPA/ HIBERNATE  jpa:    show-sql: true
+    hibernate:      ddl-auto: update    properties:      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+

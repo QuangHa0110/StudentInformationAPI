@@ -3,17 +3,27 @@ package com.manageuniversity.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.manageuniversity.entity.Classes;
-import com.manageuniversity.entity.Courses;
 import com.manageuniversity.exception.ResourceNotFoundException;
 import com.manageuniversity.repository.ClassesRepository;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ClassesService.
+ */
+/**
+ * @author Quang Ha
+ *
  */
 @Service
 public class ClassesService {
@@ -27,6 +37,7 @@ public class ClassesService {
 	 *
 	 * @return the list
 	 */
+	@Cacheable(cacheNames = "classesAll")
 	public List<Classes> findAll() {
 		return classesRepository.findAll();
 	}
@@ -37,7 +48,8 @@ public class ClassesService {
 	 * @param id the id
 	 * @return the response entity
 	 */
-	public ResponseEntity<Classes> findById(int id) {
+	@Cacheable(cacheNames = "classes", key = "#id")
+	public ResponseEntity<Classes> findById(Integer id) {
 		Classes classes = classesRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Class no found with id: " + id));
 		return ResponseEntity.ok().body(classes);
@@ -50,6 +62,7 @@ public class ClassesService {
 	 * @return the classes
 	 */
 	public Classes createClass(Classes classes) {
+		classes.setId(null);
 		return classesRepository.save(classes);
 	}
 
@@ -60,13 +73,13 @@ public class ClassesService {
 	 * @param classes the classes
 	 * @return the response entity
 	 */
-	public ResponseEntity<Classes> updateClass(int id, Classes classes) {
-		
+	@CachePut(cacheNames = "classes", key = "#id")
+	public ResponseEntity<Classes> updateClass(Integer id, Classes classes) {
+
 		Classes classes2 = classesRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Class no found with id: " + id));
 		classes.setId(classes2.getId());
 		classesRepository.save(classes);
-	
 
 		return ResponseEntity.ok().body(classes);
 	}
@@ -77,7 +90,8 @@ public class ClassesService {
 	 * @param id the id
 	 * @return the response entity
 	 */
-	public ResponseEntity<String> deleteClass(int id) {
+	@CacheEvict(cacheNames = "classes", key = "#id")
+	public ResponseEntity<String> deleteClass(Integer id) {
 		Classes classes = classesRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Class no found with id: " + id));
 
@@ -91,30 +105,47 @@ public class ClassesService {
 	 * @param courseId the course id
 	 * @return the list
 	 */
-	public List<Classes> findByCourseId(int courseId) {
+	@Cacheable(cacheNames = "classCourseId", key = "#courseId")
+	public List<Classes> findByCourseId(Integer courseId) {
 
 		return classesRepository.getListClassByCourseId(courseId);
 
 	}
-	
+
 	/**
 	 * Find by course name.
 	 *
-	 * @param course_name the course name
+	 * @param courseName the course name
 	 * @return the list
 	 */
-	public List<Classes> findByCourseName(String courseName){
+	@Cacheable(cacheNames = "classCourseName", key = "#courseName")
+	public List<Classes> findByCourseName(String courseName) {
 		return classesRepository.getListClassByCourseName(courseName);
 	}
-	
+
 	/**
 	 * Find by teacher name.
 	 *
 	 * @param teacherName the teacher name
 	 * @return the list
 	 */
-	public List<Classes> findByTeacherName(String teacherName){
+	@Cacheable(cacheNames = "classTeacherName", key = "#teacherName")
+	public List<Classes> findByTeacherName(String teacherName) {
 		return classesRepository.getListClassByTeacherName(teacherName);
+	}
+
+	/**
+	 * Find paginated.
+	 *
+	 * @param pageNo   the page no
+	 * @param pageSize the page size
+	 * @return the list
+	 */
+	@Cacheable(cacheNames = "classesPage", key = "#pageNo")
+	public List<Classes> findPaginated(int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Page<Classes> pageResult = classesRepository.findAll(paging);
+		return pageResult.toList();
 	}
 
 }

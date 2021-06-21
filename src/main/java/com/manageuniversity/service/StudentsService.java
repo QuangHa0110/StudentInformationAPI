@@ -4,6 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +34,7 @@ public class StudentsService {
 	 *
 	 * @return the list
 	 */
+	@Cacheable(cacheNames = "studentsAll")
 	public List<Students> findAll() {
 		return studentsRepository.findAll();
 	}
@@ -39,10 +46,11 @@ public class StudentsService {
 	 * @param Id the id
 	 * @return the response entity
 	 */
-	public ResponseEntity<Students> findById(int Id) {
+	@Cacheable(cacheNames = "students", key = "#id")
+	public ResponseEntity<Students> findById(Integer id) {
 
-		Students students = studentsRepository.findById(Id)
-				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + Id));
+		Students students = studentsRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + id));
 		return ResponseEntity.ok().body(students);
 	}
 	
@@ -52,8 +60,9 @@ public class StudentsService {
 	 * @param FullName the full name
 	 * @return the response entity
 	 */
-	public List<Students> findByFullName(String FullName){
-		List<Students> students = studentsRepository.findByFullName(FullName);
+	@Cacheable(cacheNames = "studentsName", key = "#fullName")
+	public List<Students> findByFullName(String fullName){
+		List<Students> students = studentsRepository.findByFullName(fullName);
 		return	students;
 	}
 
@@ -75,7 +84,8 @@ public class StudentsService {
 	 * @param students the students
 	 * @return the response entity
 	 */
-	public ResponseEntity<Students> updateStudent(int id, Students students) {
+	@CachePut(cacheNames = "students", key = "#id")
+	public ResponseEntity<Students> updateStudent(Integer id, Students students) {
 		Students students2 = studentsRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + id));
 
@@ -92,13 +102,28 @@ public class StudentsService {
 	 * @param id the id
 	 * @return the response entity
 	 */
-	public ResponseEntity<String> deleteStudent(int id) {
+	@CacheEvict(cacheNames = "students", key = "#id")
+	public ResponseEntity<String> deleteStudent(Integer id) {
 		Students students = studentsRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + id));
 
 		studentsRepository.delete(students);
 
 		return ResponseEntity.ok().body("Student deleted with success");
+	}
+	
+	/**
+	 * Find paginated.
+	 *
+	 * @param pageNumber the page number
+	 * @param pageSize the page size
+	 * @return the list
+	 */
+	@Cacheable(cacheNames = "studentsPage", key = "#pageNumber")
+	public List<Students> findPaginated(int pageNumber, int pageSize){
+		Pageable  pageable = PageRequest.of(pageNumber, pageSize);
+		Page<Students> pageResult = studentsRepository.findAll(pageable);
+		return pageResult.toList();
 	}
 
 }

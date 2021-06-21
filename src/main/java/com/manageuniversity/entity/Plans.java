@@ -26,15 +26,13 @@ public class Plans {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private int Id;
+	private Integer id;
+	
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
-	@ManyToOne(targetEntity = Courses.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+	
+	@ManyToOne(targetEntity = Courses.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "course_id", nullable = false)
 	private Courses courses;
-
-	
-
-	
 
 }

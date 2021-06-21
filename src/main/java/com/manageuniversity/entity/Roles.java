@@ -19,35 +19,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "teacher")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Teachers {
+@Entity
+@Table(name = "roles")
+public class Roles {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
+	@Column(name = "id", nullable =  false)
 	private Integer id;
-
-	@Column(name = "full_name", length = 250, nullable = false)
-	private String fullName;
-
-	@Column(name = "email", length = 100)
-	private String email;
-
-	@Column(name = "phone", length = 15)
-	private String phone;
-
-	@Column(name = "address", length = 250)
-	private String address;
-
-	@Column(name = "grade", length = 20)
-	private String grade;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teachers", cascade = CascadeType.ALL)
+	@Column(name = "name", nullable =  false)
+	private String name;
+	
+	@OneToMany( mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Classes> classes;
+	private List<Users> users;
 
 }

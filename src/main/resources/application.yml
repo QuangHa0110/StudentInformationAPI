@@ -1,8 +1,9 @@
 
+secret_key: javaapi
 # DATABASE
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/students_information
+    url: jdbc:postgresql://localhost:5432/quanlyhocvien
     username: postgres
     password: 0110quangha@
   

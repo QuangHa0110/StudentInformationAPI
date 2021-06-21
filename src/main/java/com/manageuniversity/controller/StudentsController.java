@@ -18,39 +18,43 @@ import com.manageuniversity.entity.Students;
 import com.manageuniversity.service.StudentsService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/students")
 public class StudentsController {
 	@Autowired
 	private StudentsService studentsService;
 	
-	@GetMapping("/students")
+	@GetMapping("/")
 	public List<Students> findAll(){
 		return studentsService.findAll();
 	}
+	@GetMapping("")
+	public List<Students> findPaginated(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize){
+		return studentsService.findPaginated(pageNumber, pageSize);
+	}
 	
-	@GetMapping("/students/{id}")
-	public ResponseEntity<Students> findById(@PathVariable(name = "id") int id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<Students> findById(@PathVariable(name = "id") Integer id) {
 				return studentsService.findById(id);
 		
 	}
-	@GetMapping("/student")
+	@GetMapping("/fullname")
 	public List<Students> findByFullName(@RequestParam(required = true) String fullname) {
 		return studentsService.findByFullName(fullname);
 	}
 	
-	@PostMapping("/students")
+	@PostMapping("/")
 	public Students createStudent( @RequestBody Students students) {
 		return studentsService.addStudent(students);
 	}
 	
-	@PutMapping("/students/{id}")
-	public ResponseEntity<Students> updateStudent(@PathVariable(name = "id")  int id, @RequestBody Students students){
+	@PutMapping("/{id}")
+	public ResponseEntity<Students> updateStudent(@PathVariable(name = "id")  Integer id, @RequestBody Students students){
 		
 		return studentsService.updateStudent(id, students);
 	}
 	
-	@DeleteMapping("/students/{id}")
-	public ResponseEntity<String> deleteStudent(@PathVariable(name = "id") int id){
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteStudent(@PathVariable(name = "id") Integer id){
 		return studentsService.deleteStudent(id);
 	}
 

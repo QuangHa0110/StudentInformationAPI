@@ -2,7 +2,6 @@ package com.manageuniversity.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,11 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.NoArgsConstructor;
-
-import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "registration")
@@ -26,12 +24,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Registrations {
 	@Id
-	@ManyToOne(targetEntity = Students.class, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(targetEntity = Students.class)
 	@JoinColumn(name = "student_id", nullable = false)
 	private Students students;
 
 	@Id
-	@ManyToOne(targetEntity = Classes.class, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(targetEntity = Classes.class)
 	@JoinColumn(name = "class_id", nullable = false)
 	private Classes classes;
 

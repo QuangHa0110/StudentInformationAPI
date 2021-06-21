@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class Events {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private int Id;
+	private Integer id;
 	
 	@Column(name = "name", nullable =  false, length = 250)
 	private String name;
@@ -47,7 +48,6 @@ public class Events {
 	
 	@ManyToOne(targetEntity = Classes.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "class_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Classes classes;
 	
 	

@@ -28,10 +28,10 @@ public class ExamResults {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private int Id;
+	private Integer id;
 	
 	@Column(name = "score", nullable = false)
-	private int score;
+	private Integer score;
 	
 	@Column(name = "result_date", nullable = false)
 	private Date resultDate;
@@ -39,15 +39,15 @@ public class ExamResults {
 	@Column(name = "note", length = 2000)
 	private String note;
 	
-	@ManyToOne(targetEntity = Students.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(targetEntity = Students.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "student_id", nullable = false)
 	private Students students;
 	
-	@ManyToOne(targetEntity = Exams.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(targetEntity = Exams.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "exam_id", nullable = false)
 	private Exams exams;
 	
-	@ManyToOne(targetEntity = Classes.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(targetEntity = Classes.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "class_id", nullable = false)
 	private Classes classes;
 

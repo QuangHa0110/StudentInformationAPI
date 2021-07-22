@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+   <p ></p>
+    <p> To reset your password, click the link below: 
+    	<a th:href=${url}>  change your password </a>
+    </p>
+    <p>
+      Regards, <br />
+      <em>Team software</em>
+    </p>
+  </body>
+</html>

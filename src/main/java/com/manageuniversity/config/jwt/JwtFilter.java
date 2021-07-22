@@ -18,10 +18,8 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.manageuniversity.service.CustomUserDetailsService;
 
-import lombok.extern.java.Log;
 
 @Component
-@Log
 public class JwtFilter extends GenericFilterBean {
 	private static final String AUTHORIZATION = "Authorization";
 	@Autowired
@@ -34,7 +32,6 @@ public class JwtFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		logger.info("do filter ...");
 		String token = getTokenFromRequest((HttpServletRequest) request); 
 		if(token != null && jwtProvider.validateToken(token) ) {
 			String userLogin = jwtProvider.getLoginFormToke(token);

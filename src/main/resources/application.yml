@@ -1,5 +1,5 @@
 
-secret_key: javaapi
+secret_key: ManageUniversity
 # DATABASE
 spring:
   datasource:
@@ -7,7 +7,42 @@ spring:
     username: postgres
     password: 0110quangha@
   
+  mail:
+    host: smtp.gmail.com
+    username: quanghadang08@gmail.com
+    password: mtyfxibyrtovefxm
+    port: 587
+    properties:      mail:
+        protocol: smtp
+        smtp:
+#          connectiontimeout: 500
+#          timeout: 300
+#          writeout: 500
+          auth: true
+          starttls:
+            enable: true
+  jackson:
+    time-zone: UTC    default-property-inclusion: non-null
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+    
+    serialization:
+      write-dates-as-timestamps: false      write-dates-with-zone-id: false
+      
+          
+ 
+  
 # JPA/ HIBERNATE  jpa:    show-sql: true
     hibernate:      ddl-auto: update    properties:      hibernate:
+        order_inserts: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
+        jdbc:
+          time_zone: UTC
+#
+#logging:#  level:
+#    root: WARN#    org:
+#      springframework:
+#        web: DEBUG
+#    com:
+#      manageuniversity: DEBUG
+      
+      

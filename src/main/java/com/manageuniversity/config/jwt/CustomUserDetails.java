@@ -7,18 +7,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.manageuniversity.entity.Users;
+import com.manageuniversity.entity.User;
 
 public class CustomUserDetails implements UserDetails {
 	private String username;
 	private String password;
 	private Collection<? extends GrantedAuthority> grantedAuthorities;
 	
-	public static CustomUserDetails fromUserEntityToCustomUserDetails(Users users) {
+	public static CustomUserDetails fromUserEntityToCustomUserDetails(User users) {
 		CustomUserDetails customUserDetails = new CustomUserDetails();
 		customUserDetails.username = users.getUsername();
 		customUserDetails.password = users.getPassword();
-		customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(users.getRoles().getName()));
+		customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(users.getRole().getName()));
 		return customUserDetails;
 	}
 	

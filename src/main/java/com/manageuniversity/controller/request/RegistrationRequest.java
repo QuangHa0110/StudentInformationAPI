@@ -2,8 +2,6 @@ package com.manageuniversity.controller.request;
 
 import org.jetbrains.annotations.NotNull;
 
-import lombok.Data;
-
 
 public class RegistrationRequest {
 	

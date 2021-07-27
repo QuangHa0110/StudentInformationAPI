@@ -18,39 +18,38 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.manageuniversity.service.CustomUserDetailsService;
 
-
 @Component
 public class JwtFilter extends GenericFilterBean {
 	private static final String AUTHORIZATION = "Authorization";
 	@Autowired
 	private JwtProvider jwtProvider;
-	
+
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
-	
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		String token = getTokenFromRequest((HttpServletRequest) request); 
-		if(token != null && jwtProvider.validateToken(token) ) {
+		String token = getTokenFromRequest((HttpServletRequest) request);
+		if (token != null && jwtProvider.validateToken(token)) {
 			String userLogin = jwtProvider.getLoginFormToke(token);
-			CustomUserDetails customUserDetails =  customUserDetailsService.loadUserByUsername(userLogin);
-			UsernamePasswordAuthenticationToken auth= new UsernamePasswordAuthenticationToken(customUserDetails, null,customUserDetails.getAuthorities());
+			CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null,
+					customUserDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
-			
+
 		}
 		chain.doFilter(request, response);
-		
+
 	}
-	
+
 	private String getTokenFromRequest(HttpServletRequest request) {
 		String bearer = request.getHeader(AUTHORIZATION);
-		if(hasText(bearer) && bearer.startsWith("Bearer ")) {
-			return bearer.substring(7);
-			
+		if (hasText(bearer)) {
+			return bearer;
+
 		}
-		
+
 		return null;
 	}
 

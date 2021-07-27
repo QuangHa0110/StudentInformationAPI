@@ -11,14 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import com.manageuniversity.entity.Student;
 
-@Repository 
+@Repository
 public interface StudentRepository extends JpaRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
-	
-	List<Student> findByFullname(String fullname);
-	
-	Page<Student> findAll(Specification<Student> specification, Pageable pageable);
-	
 
-	
+	List<Student> findByFullname(String fullname);
+
+	Page<Student> findAll(Specification<Student> specification, Pageable pageable);
+
+	Page<Student> findAll(Pageable pageable);
 
 }

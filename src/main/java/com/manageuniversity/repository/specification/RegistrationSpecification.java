@@ -1,7 +1,6 @@
 package com.manageuniversity.repository.specification;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,325 +11,163 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.manageuniversity.config.HandleVietnamese;
+import com.manageuniversity.controller.request.GetParamRequest;
+import com.manageuniversity.entity.Class;
+import com.manageuniversity.entity.Class_;
+import com.manageuniversity.entity.Registration;
+import com.manageuniversity.entity.Registration_;
+import com.manageuniversity.entity.Student;
+import com.manageuniversity.entity.Student_;
+
 import org.springframework.data.jpa.domain.Specification;
 
-import com.manageuniversity.config.ConvertString;
-import com.manageuniversity.config.HandleVietnamese;
-import com.manageuniversity.entity.Class;
-import com.manageuniversity.entity.Registration;
-import com.manageuniversity.entity.Student;
-
-public class RegistrationSpecification implements Specification<Registration> {
-
+public class RegistrationSpecification extends MySpecification<Registration> implements Specification<Registration> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<SearchCriteria> list;
+	private List<List<SearchCriteria>> list;
+	private Integer size;
 
-	public RegistrationSpecification() {
+	public RegistrationSpecification(List<List<String>> requestList, Integer size) {
 		// TODO Auto-generated constructor stub
-		this.list = new ArrayList<>();
+		this.size = size;
+		if (requestList != null) {
+			this.list = GetParamRequest.getListParam(requestList);
+		} else {
+			this.list = new ArrayList<List<SearchCriteria>>();
+
+		}
+
 	}
 
-	public void add(SearchCriteria criteria) {
-		list.add(criteria);
-	}
-
-	@SuppressWarnings("deprecation")
 	@Override
 	public Predicate toPredicate(Root<Registration> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		List<Predicate> predicates = new ArrayList<>();
-		Join<Registration, Student> studentJoin = root.join("student", JoinType.LEFT);
-		Join<Registration, Class> classJoin = root.join("classes", JoinType.LEFT);
+		Join<Registration, Student> studentJoin = root.join(Registration_.STUDENT,JoinType.LEFT);
+		Join<Registration, Class> classJoin = root.join(Registration_.CLASSES, JoinType.LEFT);
 
-		for (SearchCriteria criteria : list) {
-			SearchOperation searchOperation = criteria.getOperation();
+		for (List<SearchCriteria> listSearch : list) {
 
-			Date date;
-			switch (searchOperation) {
-			case GREATER_THAN:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(builder.greaterThan(studentJoin.get("id"),
-							Integer.parseInt(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("classId")) {
-					predicates.add(
-							builder.greaterThan(classJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
+			List<Predicate> predicates1 = new ArrayList<>();
+			for (SearchCriteria criteria : listSearch) {
+				SearchOperation searchOperation = criteria.getOperation();
+
+				switch (searchOperation) {
+				case GREATER_THAN:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.greaterThan(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.greaterThan(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else
+						predicates1.add(GeneralPredicate.greaterThanPredicate(root, query, builder, criteria));
+					break;
+				case LESS_THAN:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.lessThan(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.lessThan(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else
+						predicates1.add(GeneralPredicate.lessThanPredicate(root, query, builder, criteria));
+
+					break;
+				case GREATER_THAN_EQUAL:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.greaterThanOrEqualTo(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.greaterThanOrEqualTo(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else
+						predicates1.add(GeneralPredicate.greaterThanOrEqualPredicate(root, query, builder, criteria));
+					break;
+				case LESS_THAN_EQUAL:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.lessThanOrEqualTo(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.lessThanOrEqualTo(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else
+						predicates1.add(GeneralPredicate.lessThanOrEqualPredicate(root, query, builder, criteria));
+
+					break;
+				case EQUAL:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.equal(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.equal(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("studentName")) {
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								studentJoin.get(Student_.FULLNAME));
+
+						predicates1.add(builder.equal(builder.lower(vietnamePredicate),
+								HandleVietnamese.removeAccent(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("className")) {
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								classJoin.get(Class_.NAME));
+						predicates1.add(builder.equal(builder.lower(vietnamePredicate),
+								HandleVietnamese.unAccent(criteria.getValue().toString())));
+					} else
+						predicates1.add(GeneralPredicate.equalPredicate(root, query, builder, criteria));
+
+					break;
+				case NOT_EQUAL:
+					if (criteria.getKey().equals("studentId")) {
+						predicates1.add(builder.notEqual(studentJoin.get(Student_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("classId")) {
+						predicates1.add(builder.notEqual(classJoin.get(Class_.ID),
+								Integer.parseInt(criteria.getValue().toString())));
+					} else if (criteria.getKey().equals("studentName")) {
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								studentJoin.get(Student_.FULLNAME));
+						predicates1.add((builder.notEqual(builder.lower(vietnamePredicate),
+								HandleVietnamese.unAccent(criteria.getValue().toString()))));
+					} else if (criteria.getKey().equals("className")) {
+
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								classJoin.get(Class_.NAME));
+						predicates1.add((builder.notEqual(builder.lower(vietnamePredicate),
+								HandleVietnamese.unAccent(criteria.getValue().toString()))));
+					} else
+						predicates1.add(GeneralPredicate.notEqualPredicate(root, query, builder, criteria));
+
+					break;
+				case LIKE:
+					if (criteria.getKey().equals("studentName")) {
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								studentJoin.get(Student_.FULLNAME));
+						predicates1.add(builder.like(builder.lower(vietnamePredicate),
+								"%" + HandleVietnamese.unAccent(criteria.getValue().toString()).toLowerCase() + "%"));
+					} else if (criteria.getKey().equals("className")) {
+						Expression<String> vietnamePredicate = builder.function("unaccent", String.class,
+								classJoin.get(Class_.NAME));
+						predicates1.add(builder.like(builder.lower(vietnamePredicate),
+								"%" + HandleVietnamese.unAccent(criteria.getValue().toString()).toLowerCase() + "%"));
+					} else
+						predicates1.add(GeneralPredicate.likePreidcate(root, query, builder, criteria));
+
+					break;
+				default:
+					break;
 				}
-
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					date = ConvertString.convetString(criteria.getValue().toString());
-					date.setHours(23);
-					date.setMinutes(59);
-					date.setSeconds(59);
-
-					predicates.add(builder.greaterThan(root.get(criteria.getKey()).as(Date.class), date));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.greaterThan(root.get(criteria.getKey()),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				break;
-			case LESS_THAN:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(
-							builder.lessThan(studentJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("classId")) {
-					predicates.add(
-							builder.lessThan(classJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					predicates.add(builder.lessThan(root.get(criteria.getKey()).as(Date.class),
-							ConvertString.convetString(criteria.getValue().toString())));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.lessThan(root.get(criteria.getKey()),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				break;
-			case GREATER_THAN_EQUAL:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(builder.greaterThanOrEqualTo(studentJoin.get("id"),
-							Integer.parseInt(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("classId")) {
-					predicates.add(builder.greaterThanOrEqualTo(classJoin.get("id"),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					predicates.add(builder.greaterThanOrEqualTo(root.get(criteria.getKey()).as(Date.class),
-							ConvertString.convetString(criteria.getValue().toString())));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(
-							builder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.greaterThanOrEqualTo(root.get(criteria.getKey()),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-				break;
-			case LESS_THAN_EQUAL:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(builder.lessThanOrEqualTo(studentJoin.get("id"),
-							Integer.parseInt(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("classId")) {
-					predicates.add(builder.lessThanOrEqualTo(classJoin.get("id"),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					date = ConvertString.convetString(criteria.getValue().toString());
-					date.setHours(23);
-					date.setMinutes(59);
-					date.setSeconds(59);
-					predicates.add(builder.lessThanOrEqualTo(root.get(criteria.getKey()).as(Date.class), date));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(
-							builder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.lessThanOrEqualTo(root.get(criteria.getKey()),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				break;
-			case EQUAL:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(
-							builder.equal(studentJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("classId")) {
-					predicates
-							.add(builder.equal(classJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				} else if (criteria.getKey().equals("studentName")) {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							studentJoin.get("name"));
-
-					predicates.add(builder.equal(vietnamePredicate,
-							HandleVietnamese.removeAccent(criteria.getValue().toString())));
-				}  else if (criteria.getKey().equals("className")) {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							classJoin.get("name"));
-					predicates.add(builder.equal(vietnamePredicate,
-							HandleVietnamese.removeAccent(criteria.getValue().toString())));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					date = ConvertString.convetString(criteria.getValue().toString());
-					date.setHours(23);
-					date.setMinutes(59);
-					date.setSeconds(59);
-
-					Date date2 = new Date(date.getYear(), date.getMonth(), date.getDate());
-
-					predicates.add(builder.between(root.get(criteria.getKey()).as(Date.class), date2, date));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					// xử lý tiếng việt không dấu trong db
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							root.get(criteria.getKey()));
-
-					predicates.add(builder.equal(vietnamePredicate,
-							HandleVietnamese.removeAccent(criteria.getValue().toString())));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.equal(root.get(criteria.getKey()),
-							Integer.parseInt(criteria.getValue().toString())));
-				}
-
-				break;
-			case NOT_EQUAL:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(
-							builder.notEqual(studentJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				}
-				
-				else if (criteria.getKey().equals("classId")) {
-					predicates.add(
-							builder.notEqual(classJoin.get("id"), Integer.parseInt(criteria.getValue().toString())));
-				} 
-				else if (criteria.getKey().equals("studentName")) {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							studentJoin.get("name"));
-					predicates.add((builder.notEqual(vietnamePredicate,
-							HandleVietnamese.removeAccent(criteria.getValue().toString()))));
-				} 
-				
-				else if (criteria.getKey().equals("className")) {
-					
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							classJoin.get("name"));
-					predicates.add((builder.notEqual(vietnamePredicate,
-							HandleVietnamese.removeAccent(criteria.getValue().toString()))));
-				}
-				
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					date = ConvertString.convetString(criteria.getValue().toString());
-					date.setHours(23);
-					date.setMinutes(59);
-					date.setSeconds(59);
-					Date date2 = new Date(date.getYear(), date.getMonth(), date.getDate());
-					Predicate lessthanPredicate = builder.lessThan(root.get(criteria.getKey()).as(Date.class), date2);
-					Predicate greaterThanPredicate = builder.greaterThan(root.get(criteria.getKey()).as(Date.class),
-							date);
-
-					predicates.add(builder.or(lessthanPredicate, greaterThanPredicate));
-
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(builder.notEqual(root.get(criteria.getKey()), criteria.getValue().toString()));
-				}
-
-				break;
-			case LIKE:
-				if (criteria.getKey().equals("studentName")) {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							studentJoin.get("name"));
-					predicates.add(builder.like(builder.lower(vietnamePredicate),
-							"%" + HandleVietnamese.removeAccent(criteria.getValue().toString()).toLowerCase() + "%"));
-				} 
-				
-				else if (criteria.getKey().equals("className")) {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							classJoin.get("name"));
-					predicates.add(builder.like(builder.lower(vietnamePredicate),
-							"%" + HandleVietnamese.removeAccent(criteria.getValue().toString()).toLowerCase() + "%"));
-				}
-				else {
-					Expression<String> vietnamePredicate = builder.function("converttvkdau", String.class,
-							root.get(criteria.getKey()));
-					predicates.add(builder.like(builder.lower(vietnamePredicate),
-							"%" + HandleVietnamese.removeAccent(criteria.getValue().toString()).toLowerCase() + "%"));
-				}
-
-				break;
-			case IN:
-				if (criteria.getKey().equals("studentId")) {
-					predicates.add(builder.in(studentJoin.get("id"))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())));
-				} else if (criteria.getKey().equals("studentName")) {
-					predicates.add(builder.in(studentJoin.get("name"))
-							.value(ConvertString.convertListString((String[]) criteria.getValue())));
-				} 
-				else if (criteria.getKey().equals("classId")) {
-					predicates.add(builder.in(classJoin.get("id"))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())));
-				} 
-				
-				else if (criteria.getKey().equals("className")) {
-					predicates.add(builder.in(classJoin.get("name"))
-							.value(ConvertString.convertListString((String[]) criteria.getValue())));
-				}
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					List<Predicate> predicates2 = new ArrayList<>();
-					for (Date datetime : ConvertString.convertListDate((String[]) criteria.getValue())) {
-						date = datetime;
-						date.setHours(23);
-						date.setMinutes(59);
-						date.setSeconds(59);
-
-						Date date2 = new Date(date.getYear(), date.getMonth(), date.getDate());
-
-						predicates2.add(builder.between(root.get(criteria.getKey()).as(Date.class), date2, date));
-					}
-					predicates.add(builder.or(predicates2.toArray(new Predicate[0])));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(builder.in(root.get(criteria.getKey()))
-							.value(ConvertString.convertListString((String[]) criteria.getValue())));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.in(root.get(criteria.getKey()))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())));
-				}
-
-				break;
-			case NOT_IN:
-				if (criteria.getKey().equals("studentId")) {
-
-					predicates.add(builder.in(studentJoin.get("id"))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())).not());
-				} else if (criteria.getKey().equals("studentName")) {
-					predicates.add(builder.in(studentJoin.get("name"))
-							.value(ConvertString.convertListDate((String[]) criteria.getValue())).not());
-				} 
-				
-				else if (criteria.getKey().equals("classId")) {
-					predicates.add(builder.in(classJoin.get("id"))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())).not());
-				} else if (criteria.getKey().equals("className")) {
-					predicates.add(builder.in(classJoin.get("name"))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())).not());
-				} 
-				
-				else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Date.class)) {
-					List<Predicate> predicates3 = new ArrayList<>();
-					for (Date datetime : ConvertString.convertListDate((String[]) criteria.getValue())) {
-						date = datetime;
-						date.setHours(23);
-						date.setMinutes(59);
-						date.setSeconds(59);
-
-						Date date2 = new Date(date.getYear(), date.getMonth(), date.getDate());
-						Predicate lessthanPredicate = builder.lessThan(root.get(criteria.getKey()).as(Date.class),
-								date2);
-						Predicate greaterThanPredicate = builder.greaterThan(root.get(criteria.getKey()).as(Date.class),
-								date);
-
-						predicates3.add(builder.or(lessthanPredicate, greaterThanPredicate));
-					}
-					predicates.add(builder.or(predicates3.toArray(new Predicate[0])));
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(String.class)) {
-					predicates.add(builder.in(root.get(criteria.getKey()))
-							.value(ConvertString.convertListString((String[]) criteria.getValue())).not());
-				} else if (root.get(criteria.getKey()).getJavaType().isAssignableFrom(Integer.class)) {
-					predicates.add(builder.in(root.get(criteria.getKey()))
-							.value(ConvertString.convertListInteger((String[]) criteria.getValue())).not());
-				}
-
-				break;
-			default:
-				break;
 			}
-
+			predicates.add(builder.or(predicates1.toArray(new Predicate[0])));
 		}
-		return builder.and(predicates.toArray(new Predicate[0]));
+		if (this.size == 1) {
+			return builder.or(predicates.toArray(new Predicate[0]));
+		}
+
+		else
+			return builder.and(predicates.toArray(new Predicate[0]));
 
 	}
-
 }

@@ -13,7 +13,10 @@ import com.manageuniversity.entity.Exam;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Integer>, JpaSpecificationExecutor<Exam> {
-	@EntityGraph(attributePaths = {"course"}, type=EntityGraphType.FETCH)
+	@EntityGraph(attributePaths = { "course" }, type = EntityGraphType.FETCH)
 	Page<Exam> findAll(Specification<Exam> specification, Pageable pageable);
+
+	@EntityGraph(attributePaths = { "course" }, type = EntityGraphType.FETCH)
+	Page<Exam> findAll(Pageable pageable);
 
 }

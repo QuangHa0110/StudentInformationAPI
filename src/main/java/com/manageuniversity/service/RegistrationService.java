@@ -1,6 +1,17 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.RegistrationDTO;
+import com.manageuniversity.entity.Class;
+import com.manageuniversity.entity.Registration;
+import com.manageuniversity.entity.RegistrationId;
+import com.manageuniversity.entity.Student;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.RegistrationMapper;
+import com.manageuniversity.repository.ClassRepository;
+import com.manageuniversity.repository.RegistrationRepository;
+import com.manageuniversity.repository.StudentRepository;
+import com.manageuniversity.repository.specification.RegistrationSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,18 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.RegistrationDTO;
-import com.manageuniversity.entity.Class;
-import com.manageuniversity.entity.Registration;
-import com.manageuniversity.entity.RegistrationId;
-import com.manageuniversity.entity.Student;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.RegistrationMapperImpl;
-import com.manageuniversity.repository.ClassRepository;
-import com.manageuniversity.repository.RegistrationRepository;
-import com.manageuniversity.repository.StudentRepository;
-import com.manageuniversity.repository.specification.RegistrationSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,16 +28,22 @@ import com.manageuniversity.repository.specification.RegistrationSpecification;
 public class RegistrationService {
 
 	/** The registrations repository. */
-	@Autowired
+
 	private RegistrationRepository registrationsRepository;
 
-	@Autowired
 	private ClassRepository classesRepository;
 
-	@Autowired
 	private StudentRepository studentsRepository;
-	
-	private final RegistrationMapperImpl registrationMapper= new RegistrationMapperImpl();
+
+	private final RegistrationMapper registrationMapper;
+
+	public RegistrationService(RegistrationRepository registrationsRepository, ClassRepository classesRepository,
+			StudentRepository studentsRepository, RegistrationMapper registrationMapper) {
+		this.registrationsRepository = registrationsRepository;
+		this.classesRepository = classesRepository;
+		this.studentsRepository = studentsRepository;
+		this.registrationMapper = registrationMapper;
+	}
 
 	/*
 	 * Find all.
@@ -48,6 +53,10 @@ public class RegistrationService {
 	@Cacheable(cacheNames = "registrationsAll")
 	public Page<Registration> findAll(RegistrationSpecification specification, Pageable pageable) {
 		return registrationsRepository.findAll(specification, pageable);
+	}
+	@Cacheable(cacheNames = "registrationsAll")
+	public Page<Registration> findAll( Pageable pageable) {
+		return registrationsRepository.findAll( pageable);
 	}
 
 	/**

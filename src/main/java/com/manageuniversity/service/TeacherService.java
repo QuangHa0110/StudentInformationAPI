@@ -1,6 +1,13 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.TeacherDTO;
+import com.manageuniversity.entity.Teacher;
+import com.manageuniversity.exception.APIException;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.TeacherMapper;
+import com.manageuniversity.repository.TeacherRepository;
+import com.manageuniversity.repository.specification.TeacherSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,14 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.TeacherDTO;
-import com.manageuniversity.entity.Teacher;
-import com.manageuniversity.exception.APIException;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.TeacherMapperImpl;
-import com.manageuniversity.repository.TeacherRepository;
-import com.manageuniversity.repository.specification.TeacherSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -25,10 +24,15 @@ import com.manageuniversity.repository.specification.TeacherSpecification;
 public class TeacherService {
 
 	/** The teachers repository. */
-	@Autowired
+
 	private TeacherRepository teachersRepository;
-	
-	private final TeacherMapperImpl teacherMapper= new TeacherMapperImpl();
+
+	private final TeacherMapper teacherMapper;
+
+	public TeacherService(TeacherRepository teachersRepository, TeacherMapper teacherMapper) {
+		this.teachersRepository = teachersRepository;
+		this.teacherMapper = teacherMapper;
+	}
 
 	/**
 	 * Find all.
@@ -37,12 +41,15 @@ public class TeacherService {
 	 */
 	@Cacheable(cacheNames = "teacherAll")
 	public Page<Teacher> findAll(TeacherSpecification specification, Pageable pageable) {
-		
-		try {
-			return teachersRepository.findAll(specification, pageable);
-		} catch (Exception e) {
-			throw new APIException("Server error");
-		}
+
+		return teachersRepository.findAll(specification, pageable);
+
+	}
+
+	@Cacheable(cacheNames = "teacherAll")
+	public Page<Teacher> findAll(Pageable pageable) {
+
+		return teachersRepository.findAll(pageable);
 
 	}
 
@@ -138,7 +145,5 @@ public class TeacherService {
 		}
 
 	}
-
-
 
 }

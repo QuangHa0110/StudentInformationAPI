@@ -1,0 +1,13 @@
+2021-07-25 21:46:39.876  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Starting ManageUniversityApplication using Java 11.0.11 on DESKTOP-MMITN1F with PID 8844 (E:\ProjectJava\ManageUniversity\target\classes started by Quang Ha in E:\ProjectJava\ManageUniversity)
+2021-07-25 21:46:39.882 DEBUG 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-07-25 21:46:39.885  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : No active profile set, falling back to default profiles: default
+2021-07-25 21:46:41.812  WARN 8844 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:46:41.813  WARN 8844 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:46:43.185  WARN 8844 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-07-25 21:46:43.285 DEBUG 8844 --- [restartedMain] c.manageuniversity.config.jwt.JwtFilter  : Filter 'jwtFilter' configured for use
+2021-07-25 21:46:44.943 DEBUG 8844 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 54 mappings in 'requestMappingHandlerMapping'
+2021-07-25 21:46:45.024  WARN 8844 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-07-25 21:46:45.280 DEBUG 8844 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2021-07-25 21:46:45.418 DEBUG 8844 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2021-07-25 21:46:45.486 DEBUG 8844 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2021-07-25 21:46:45.980  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Started ManageUniversityApplication in 7.266 seconds (JVM running for 4842.645)

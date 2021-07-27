@@ -1,6 +1,14 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.ExamDTO;
+import com.manageuniversity.entity.Course;
+import com.manageuniversity.entity.Exam;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.ExamMapper;
+import com.manageuniversity.repository.CourseRepository;
+import com.manageuniversity.repository.ExamRepository;
+import com.manageuniversity.repository.specification.ExamSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,15 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.ExamDTO;
-import com.manageuniversity.entity.Course;
-import com.manageuniversity.entity.Exam;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.ExamMapperImpl;
-import com.manageuniversity.repository.CourseRepository;
-import com.manageuniversity.repository.ExamRepository;
-import com.manageuniversity.repository.specification.ExamSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -26,13 +25,18 @@ import com.manageuniversity.repository.specification.ExamSpecification;
 public class ExamService {
 
 	/** The exams repository. */
-	@Autowired
+
 	private ExamRepository examsRepository;
 
-	@Autowired
 	private CourseRepository coursesRepository;
-	
-	private final ExamMapperImpl examMapper= new ExamMapperImpl();
+
+	private final ExamMapper examMapper;
+
+	public ExamService(ExamRepository examsRepository, CourseRepository coursesRepository, ExamMapper examMapper) {
+		this.examsRepository = examsRepository;
+		this.coursesRepository = coursesRepository;
+		this.examMapper = examMapper;
+	}
 
 	/**
 	 * Find all.
@@ -46,6 +50,10 @@ public class ExamService {
 		return examsRepository.findAll(specification, pageable);
 	}
 
+	@Cacheable(cacheNames = "examsAll")
+	public Page<Exam> findAll( Pageable pageable) {
+		return examsRepository.findAll( pageable);
+	}
 
 	/**
 	 * Find by id.

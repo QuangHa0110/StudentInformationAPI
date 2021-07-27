@@ -1,6 +1,14 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.EventDTO;
+import com.manageuniversity.entity.Class;
+import com.manageuniversity.entity.Event;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.EventMapper;
+import com.manageuniversity.repository.ClassRepository;
+import com.manageuniversity.repository.EventRepository;
+import com.manageuniversity.repository.specification.EventSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,15 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.EventDTO;
-import com.manageuniversity.entity.Class;
-import com.manageuniversity.entity.Event;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.EventMapperImpl;
-import com.manageuniversity.repository.ClassRepository;
-import com.manageuniversity.repository.EventRepository;
-import com.manageuniversity.repository.specification.EventSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -26,14 +25,18 @@ import com.manageuniversity.repository.specification.EventSpecification;
 public class EventService {
 
 	/** The events repository. */
-	@Autowired
+
 	private EventRepository eventsRepository;
 
-	@Autowired
 	private ClassRepository classesRepository;
-	
-	
-	private final EventMapperImpl eventMapper= new EventMapperImpl();
+
+	private final EventMapper eventMapper;
+
+	public EventService(EventRepository eventsRepository, ClassRepository classesRepository, EventMapper eventMapper) {
+		this.eventsRepository = eventsRepository;
+		this.classesRepository = classesRepository;
+		this.eventMapper = eventMapper;
+	}
 
 	/**
 	 * Find all.
@@ -41,9 +44,15 @@ public class EventService {
 	 * @return the list
 	 */
 	@Cacheable(cacheNames = "eventsAll")
-	public Page<Event> findAll(EventSpecification specification, Pageable pageable ) {
+	public Page<Event> findAll(EventSpecification specification, Pageable pageable) {
 
-		return eventsRepository.findAll(specification,pageable);
+		return eventsRepository.findAll(specification, pageable);
+	}
+
+	@Cacheable(cacheNames = "eventsAll")
+	public Page<Event> findAll(Pageable pageable) {
+
+		return eventsRepository.findAll(pageable);
 	}
 
 	/**
@@ -94,23 +103,22 @@ public class EventService {
 		if (eventsDTO.getClassId() != null) {
 			Class classes = classesRepository.findById(eventsDTO.getClassId()).orElseThrow(
 					() -> new ResourceNotFoundException("Class no found with id: " + eventsDTO.getClassId()));
-			
+
 			event2.setClasses(classes);
 		}
 		if (eventsDTO.getHappenDate() != null) {
 			event2.setHappenDate(eventsDTO.getHappenDate());
 
 		}
-		if(eventsDTO.getName() !=null) {
+		if (eventsDTO.getName() != null) {
 			event2.setName(eventsDTO.getName());
-			
+
 		}
-		if(eventsDTO.getStatus() != null) {
+		if (eventsDTO.getStatus() != null) {
 			event2.setStatus(eventsDTO.getStatus());
 		}
 		eventsRepository.save(event2);
-		
-	
+
 		return ResponseEntity.ok().body(eventMapper.eventToEventDTO(event2));
 	}
 
@@ -127,7 +135,5 @@ public class EventService {
 		eventsRepository.delete(event);
 		return ResponseEntity.ok().body("Event deleted with success");
 	}
-
-
 
 }

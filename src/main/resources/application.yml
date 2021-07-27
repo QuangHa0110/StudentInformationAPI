@@ -12,7 +12,8 @@ spring:
     username: quanghadang08@gmail.com
     password: mtyfxibyrtovefxm
     port: 587
-    properties:      mail:
+    properties:
+      mail:
         protocol: smtp
         smtp:
 #          connectiontimeout: 500
@@ -22,27 +23,36 @@ spring:
           starttls:
             enable: true
   jackson:
-    time-zone: UTC    default-property-inclusion: non-null
+    time-zone: UTC
+    default-property-inclusion: non-null
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
     
     serialization:
-      write-dates-as-timestamps: false      write-dates-with-zone-id: false
+      write-dates-as-timestamps: false
+      write-dates-with-zone-id: false
       
-          
+    
+      
  
   
-# JPA/ HIBERNATE  jpa:    show-sql: true
-    hibernate:      ddl-auto: update    properties:      hibernate:
-        order_inserts: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          time_zone: UTC
-#
-#logging:#  level:
-#    root: WARN#    org:
-#      springframework:
-#        web: DEBUG
-#    com:
-#      manageuniversity: DEBUG
+# JPA/ HIBERNATE
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect 
+
+logging:
+ file:
+  name: E:\ProjectJava\ManageUniversity\src\main\java\com\manageuniversity\log\application.log
+ level:
+   root: WARN
+   org:
+     springframework:
+       web: DEBUG
+   com:
+     manageuniversity: DEBUG
       
       

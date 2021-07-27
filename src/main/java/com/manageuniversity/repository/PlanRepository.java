@@ -13,7 +13,10 @@ import com.manageuniversity.entity.Plan;
 
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, Integer>, JpaSpecificationExecutor<Plan> {
-	@EntityGraph(attributePaths = {"course"}, type=EntityGraphType.FETCH)
+	@EntityGraph(attributePaths = { "course" }, type = EntityGraphType.FETCH)
 	Page<Plan> findAll(Specification<Plan> specification, Pageable pageable);
+
+	@EntityGraph(attributePaths = { "course" }, type = EntityGraphType.FETCH)
+	Page<Plan> findAll(Pageable pageable);
 
 }

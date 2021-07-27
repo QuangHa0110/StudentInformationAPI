@@ -1,16 +1,5 @@
 package com.manageuniversity.config.mail;
 
-import java.util.Properties;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import ch.qos.logback.classic.pattern.EnsureExceptionHandling;
-
 //@Configuration
 public class MailConfig {
 	

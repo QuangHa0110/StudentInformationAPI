@@ -28,8 +28,11 @@ public interface RegistrationRepository
 
 	@Query(value = "FROM Registration r WHERE r.classes.id=?1")
 	List<Registration> findByClassId(Integer id);
-	
-	@EntityGraph(attributePaths = {"student","classes"}, type=EntityGraphType.FETCH)
+
+	@EntityGraph(attributePaths = { "student", "classes" }, type = EntityGraphType.FETCH)
 	Page<Registration> findAll(Specification<Registration> specification, Pageable pageable);
+
+	@EntityGraph(attributePaths = { "student", "classes" }, type = EntityGraphType.FETCH)
+	Page<Registration> findAll(Pageable pageable);
 
 }

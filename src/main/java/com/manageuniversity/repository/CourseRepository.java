@@ -11,7 +11,9 @@ import com.manageuniversity.entity.Course;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpecificationExecutor<Course> {
-	
+
 	public Page<Course> findAll(Specification<Course> spec, Pageable pageable);
+
+	public Page<Course> findAll(Pageable pageable);
 
 }

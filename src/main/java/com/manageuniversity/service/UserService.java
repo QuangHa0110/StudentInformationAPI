@@ -5,17 +5,16 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.manageuniversity.entity.Role;
 import com.manageuniversity.entity.User;
 import com.manageuniversity.exception.ResourceNotFoundException;
 import com.manageuniversity.repository.RoleRepository;
 import com.manageuniversity.repository.UserRepository;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -28,16 +27,25 @@ public class UserService {
 	private static final int EXPIRE_TOKEN_AFTER_MINUTES = 10;
 
 	/** The users repository. */
-	@Autowired
+
 	private UserRepository usersRepository;
 
 	/** The roles repository. */
-	@Autowired
+
 	private RoleRepository rolesRepository;
 
 	/** The password encoder. */
-	@Autowired
+
 	private PasswordEncoder passwordEncoder;
+
+	
+
+	public UserService(UserRepository usersRepository, RoleRepository rolesRepository,
+			PasswordEncoder passwordEncoder) {
+		this.usersRepository = usersRepository;
+		this.rolesRepository = rolesRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	/**
 	 * Creates the users.

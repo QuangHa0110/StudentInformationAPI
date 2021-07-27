@@ -1,6 +1,12 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.StudentDTO;
+import com.manageuniversity.entity.Student;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.StudentMapper;
+import com.manageuniversity.repository.StudentRepository;
+import com.manageuniversity.repository.specification.StudentSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -9,25 +15,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.manageuniversity.dto.StudentDTO;
-import com.manageuniversity.entity.Student;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.StudentMapperImpl;
-import com.manageuniversity.repository.StudentRepository;
-import com.manageuniversity.repository.specification.StudentSpecification;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class StudentsService.
  */
 @Service
 public class StudentService {
-	
+
 	/** The students repository. */
-	@Autowired
+
 	private StudentRepository studentsRepository;
-	
-	private final StudentMapperImpl studentMapper= new StudentMapperImpl();
+
+	private final StudentMapper studentMapper;
+
+	public StudentService(StudentRepository studentsRepository, StudentMapper studentMapper) {
+		this.studentsRepository = studentsRepository;
+		this.studentMapper = studentMapper;
+	}
 
 	/**
 	 * Find all.
@@ -36,9 +40,16 @@ public class StudentService {
 	 */
 	@Cacheable(cacheNames = "studentsAll")
 	public Page<Student> findAll(StudentSpecification specification, Pageable pageable) {
-		
+
 		return studentsRepository.findAll(specification, pageable);
 	}
+
+	@Cacheable(cacheNames = "studentsAll")
+	public Page<Student> findAll(Pageable pageable) {
+
+		return studentsRepository.findAll(pageable);
+	}
+
 
 
 	/**
@@ -54,7 +65,7 @@ public class StudentService {
 				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + id));
 		return ResponseEntity.ok().body(students);
 	}
-	
+
 	/**
 	 * Adds the student.
 	 *
@@ -70,7 +81,7 @@ public class StudentService {
 	/**
 	 * Update student.
 	 *
-	 * @param id the id
+	 * @param id       the id
 	 * @param students the students
 	 * @return the response entity
 	 */
@@ -78,30 +89,29 @@ public class StudentService {
 	public ResponseEntity<Student> updateStudent(Integer id, StudentDTO studentsDTO) {
 		Student students = studentsRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Student no found on: " + id));
-		
-		if(studentsDTO.getAddress()!= null) {
+
+		if (studentsDTO.getAddress() != null) {
 			students.setAddress(studentsDTO.getAddress());
 		}
-		if(studentsDTO.getBirthday()!= null) {
+		if (studentsDTO.getBirthday() != null) {
 			students.setBirthday(studentsDTO.getBirthday());
 		}
-		if(studentsDTO.getCreateDate()!= null) {
+		if (studentsDTO.getCreateDate() != null) {
 			students.setCreateDate(studentsDTO.getCreateDate());
-			
+
 		}
-		if(studentsDTO.getEmail()!= null) {
+		if (studentsDTO.getEmail() != null) {
 			students.setEmail(studentsDTO.getEmail());
 		}
-		if(studentsDTO.getFacebook()!= null) {
+		if (studentsDTO.getFacebook() != null) {
 			students.setFacebook(studentsDTO.getFacebook());
 		}
-		if(studentsDTO.getFullName()!= null) {
+		if (studentsDTO.getFullName() != null) {
 			students.setFullname(studentsDTO.getFullName());
 		}
-		if(studentsDTO.getNote()!= null) {
+		if (studentsDTO.getNote() != null) {
 			students.setNote(studentsDTO.getNote());
 		}
-	
 
 		studentsRepository.save(students);
 
@@ -123,6 +133,5 @@ public class StudentService {
 
 		return ResponseEntity.ok().body("Student deleted with success");
 	}
-	
 
 }

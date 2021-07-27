@@ -1,6 +1,14 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.PlanDTO;
+import com.manageuniversity.entity.Course;
+import com.manageuniversity.entity.Plan;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.PlanMapper;
+import com.manageuniversity.repository.CourseRepository;
+import com.manageuniversity.repository.PlanRepository;
+import com.manageuniversity.repository.specification.PlanSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,15 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.PlanDTO;
-import com.manageuniversity.entity.Course;
-import com.manageuniversity.entity.Plan;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.PlanMapperImpl;
-import com.manageuniversity.repository.CourseRepository;
-import com.manageuniversity.repository.PlanRepository;
-import com.manageuniversity.repository.specification.PlanSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -26,14 +25,20 @@ import com.manageuniversity.repository.specification.PlanSpecification;
 public class PlanService {
 
 	/** The plans repository. */
-	@Autowired
+
 	private PlanRepository plansRepository;
 
 	/** The courses repository. */
-	@Autowired
+
 	private CourseRepository coursesRepository;
 
-	private final PlanMapperImpl planMapper = new PlanMapperImpl();
+	private final PlanMapper planMapper;
+
+	public PlanService(PlanRepository plansRepository, CourseRepository coursesRepository, PlanMapper planMapper) {
+		this.plansRepository = plansRepository;
+		this.coursesRepository = coursesRepository;
+		this.planMapper = planMapper;
+	}
 
 	/**
 	 * Find all.
@@ -46,6 +51,12 @@ public class PlanService {
 	public Page<Plan> findAll(PlanSpecification specification, Pageable pageable) {
 
 		return plansRepository.findAll(specification, pageable);
+	}
+
+	@Cacheable(cacheNames = "plansAll")
+	public Page<Plan> findAll(Pageable pageable) {
+
+		return plansRepository.findAll(pageable);
 	}
 
 	/**

@@ -1,6 +1,18 @@
 package com.manageuniversity.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.manageuniversity.dto.ExamResultDTO;
+import com.manageuniversity.entity.Class;
+import com.manageuniversity.entity.Exam;
+import com.manageuniversity.entity.ExamResult;
+import com.manageuniversity.entity.Student;
+import com.manageuniversity.exception.ResourceNotFoundException;
+import com.manageuniversity.mapper.ExamResultMapper;
+import com.manageuniversity.repository.ClassRepository;
+import com.manageuniversity.repository.ExamRepository;
+import com.manageuniversity.repository.ExamResultRepository;
+import com.manageuniversity.repository.StudentRepository;
+import com.manageuniversity.repository.specification.ExamResultSpecification;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,19 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.manageuniversity.dto.ExamResultDTO;
-import com.manageuniversity.entity.Class;
-import com.manageuniversity.entity.Exam;
-import com.manageuniversity.entity.ExamResult;
-import com.manageuniversity.entity.Student;
-import com.manageuniversity.exception.ResourceNotFoundException;
-import com.manageuniversity.mapper.ExamResultMapperImpl;
-import com.manageuniversity.repository.ClassRepository;
-import com.manageuniversity.repository.ExamRepository;
-import com.manageuniversity.repository.ExamResultRepository;
-import com.manageuniversity.repository.StudentRepository;
-import com.manageuniversity.repository.specification.ExamResultSpecification;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -30,19 +29,25 @@ import com.manageuniversity.repository.specification.ExamResultSpecification;
 public class ExamResultService {
 
 	/** The exam results repository. */
-	@Autowired
+
 	private ExamResultRepository examResultsRepository;
 
-	@Autowired
 	private ClassRepository classesRepository;
 
-	@Autowired
 	private StudentRepository studentsRepository;
 
-	@Autowired
 	private ExamRepository examsRepository;
-	
-	private final ExamResultMapperImpl examResultMapper= new ExamResultMapperImpl();
+
+	private final ExamResultMapper examResultMapper;
+
+	public ExamResultService(ExamResultRepository examResultsRepository, ClassRepository classesRepository,
+			StudentRepository studentsRepository, ExamRepository examsRepository, ExamResultMapper examResultMapper) {
+		this.examResultsRepository = examResultsRepository;
+		this.classesRepository = classesRepository;
+		this.studentsRepository = studentsRepository;
+		this.examsRepository = examsRepository;
+		this.examResultMapper = examResultMapper;
+	}
 
 	/**
 	 * Find all.
@@ -52,6 +57,11 @@ public class ExamResultService {
 	@Cacheable(cacheNames = "examResultsAll")
 	public Page<ExamResult> findAll(ExamResultSpecification specification, Pageable pageable) {
 		return examResultsRepository.findAll(specification, pageable);
+	}
+
+	@Cacheable(cacheNames = "examResultsAll")
+	public Page<ExamResult> findAll(Pageable pageable) {
+		return examResultsRepository.findAll(pageable);
 	}
 
 	/**
@@ -149,30 +159,5 @@ public class ExamResultService {
 		examResultsRepository.delete(examResults);
 		return ResponseEntity.ok().body("Exam result deleted successful");
 	}
-
-//	@Cacheable(cacheNames = "class-examresult", key = "#classId")
-//	public List<ExamResultDTO> findByClassId(Integer classId) {
-//		Class classes = classesRepository.findById(classId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Class no found with id: " + classId));
-//
-//		return ExamResultsMapper.mapListExamResults(classes.getExamResults());
-//	}
-//
-//	@Cacheable(cacheNames = "student-examresult", key = "#studentId")
-//	public List<ExamResultDTO> findByStudentId(Integer studentId) {
-//		Student students = studentsRepository.findById(studentId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Student no found with id: " + studentId));
-//
-//		return ExamResultsMapper.mapListExamResults(students.getExamResults());
-//
-//	}
-//
-//	@Cacheable(cacheNames = "exam-examresult", key = "#examId")
-//	public List<ExamResultDTO> findByExamId(Integer examId) {
-//		Exam exams = examsRepository.findById(examId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Exam no found with id: " + examId));
-//		return ExamResultsMapper.mapListExamResults(exams.getExamResults());
-//
-//	}
 
 }

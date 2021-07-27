@@ -2,14 +2,15 @@ package com.manageuniversity.mapper;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
 import com.manageuniversity.dto.ClassDTO;
 import com.manageuniversity.entity.Class;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 
 @Mapper
+
 public interface ClassMapper {
 	
 	Class classDTOToClass(ClassDTO classDTO);

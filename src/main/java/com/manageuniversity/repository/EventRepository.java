@@ -28,4 +28,7 @@ public interface EventRepository extends JpaRepository<Event, Integer>, JpaSpeci
 	@EntityGraph(attributePaths = {"classes"}, type=EntityGraphType.FETCH)
 	public Page<Event> findAll(Specification<Event> spec, Pageable pageable);
 
+	@EntityGraph(attributePaths = {"classes"}, type=EntityGraphType.FETCH)
+	public Page<Event> findAll( Pageable pageable);
+
 }

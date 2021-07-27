@@ -1,0 +1,53 @@
+2021-07-25 21:46:49.830  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Starting ManageUniversityApplication using Java 11.0.11 on DESKTOP-MMITN1F with PID 8844 (E:\ProjectJava\ManageUniversity\target\classes started by Quang Ha in E:\ProjectJava\ManageUniversity)
+2021-07-25 21:46:49.831 DEBUG 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-07-25 21:46:49.832  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : No active profile set, falling back to default profiles: default
+2021-07-25 21:46:51.490  WARN 8844 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:46:51.490  WARN 8844 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:46:52.483  WARN 8844 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-07-25 21:46:52.540 DEBUG 8844 --- [restartedMain] c.manageuniversity.config.jwt.JwtFilter  : Filter 'jwtFilter' configured for use
+2021-07-25 21:46:52.961 DEBUG 8844 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 54 mappings in 'requestMappingHandlerMapping'
+2021-07-25 21:46:53.012  WARN 8844 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-07-25 21:46:53.110 DEBUG 8844 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2021-07-25 21:46:53.156 DEBUG 8844 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2021-07-25 21:46:53.186 DEBUG 8844 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2021-07-25 21:46:53.704  INFO 8844 --- [restartedMain] c.m.ManageUniversityApplication          : Started ManageUniversityApplication in 4.34 seconds (JVM running for 4850.37)
+2021-07-25 21:47:39.075  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Starting ManageUniversityApplication using Java 11.0.11 on DESKTOP-MMITN1F with PID 16296 (E:\ProjectJava\ManageUniversity\target\classes started by Quang Ha in E:\ProjectJava\ManageUniversity)
+2021-07-25 21:47:39.078 DEBUG 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-07-25 21:47:39.078  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : No active profile set, falling back to default profiles: default
+2021-07-25 21:47:39.347  WARN 16296 --- [background-preinit] o.s.h.c.j.Jackson2ObjectMapperBuilder    : For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2021-07-25 21:47:44.271  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:47:44.273  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:47:45.817  WARN 16296 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-07-25 21:47:45.971 DEBUG 16296 --- [restartedMain] c.manageuniversity.config.jwt.JwtFilter  : Filter 'jwtFilter' configured for use
+2021-07-25 21:47:47.137 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 54 mappings in 'requestMappingHandlerMapping'
+2021-07-25 21:47:47.276  WARN 16296 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-07-25 21:47:47.514 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2021-07-25 21:47:47.620 DEBUG 16296 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2021-07-25 21:47:47.641 DEBUG 16296 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2021-07-25 21:47:48.564  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Started ManageUniversityApplication in 10.29 seconds (JVM running for 11.178)
+2021-07-25 21:48:45.051  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Starting ManageUniversityApplication using Java 11.0.11 on DESKTOP-MMITN1F with PID 16296 (E:\ProjectJava\ManageUniversity\target\classes started by Quang Ha in E:\ProjectJava\ManageUniversity)
+2021-07-25 21:48:45.052 DEBUG 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-07-25 21:48:45.052  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : No active profile set, falling back to default profiles: default
+2021-07-25 21:48:46.488  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:48:46.489  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:48:47.212  WARN 16296 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-07-25 21:48:47.257 DEBUG 16296 --- [restartedMain] c.manageuniversity.config.jwt.JwtFilter  : Filter 'jwtFilter' configured for use
+2021-07-25 21:48:47.755 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 54 mappings in 'requestMappingHandlerMapping'
+2021-07-25 21:48:47.817  WARN 16296 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-07-25 21:48:47.916 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2021-07-25 21:48:47.946 DEBUG 16296 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2021-07-25 21:48:47.959 DEBUG 16296 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2021-07-25 21:48:48.243  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Started ManageUniversityApplication in 3.239 seconds (JVM running for 70.857)
+2021-07-25 21:48:54.004  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Starting ManageUniversityApplication using Java 11.0.11 on DESKTOP-MMITN1F with PID 16296 (E:\ProjectJava\ManageUniversity\target\classes started by Quang Ha in E:\ProjectJava\ManageUniversity)
+2021-07-25 21:48:54.006 DEBUG 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Running with Spring Boot v2.5.0, Spring v5.3.7
+2021-07-25 21:48:54.008  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : No active profile set, falling back to default profiles: default
+2021-07-25 21:48:55.251  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:48:55.252  WARN 16296 --- [restartedMain] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): com.manageuniversity.entity.RegistrationId
+2021-07-25 21:48:55.860  WARN 16296 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-07-25 21:48:55.902 DEBUG 16296 --- [restartedMain] c.manageuniversity.config.jwt.JwtFilter  : Filter 'jwtFilter' configured for use
+2021-07-25 21:48:56.353 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 54 mappings in 'requestMappingHandlerMapping'
+2021-07-25 21:48:56.394  WARN 16296 --- [restartedMain] org.thymeleaf.templatemode.TemplateMode  : [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2021-07-25 21:48:56.473 DEBUG 16296 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2021-07-25 21:48:56.494 DEBUG 16296 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2021-07-25 21:48:56.505 DEBUG 16296 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2021-07-25 21:48:56.769  INFO 16296 --- [restartedMain] c.m.ManageUniversityApplication          : Started ManageUniversityApplication in 2.801 seconds (JVM running for 79.383)

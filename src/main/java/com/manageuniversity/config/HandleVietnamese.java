@@ -1,9 +1,12 @@
 package com.manageuniversity.config;
 
+import java.text.Normalizer;
 import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Pattern;
 
 public class HandleVietnamese {
+	
+	
 	private static char[] SOURCE_CHARACTERS = { 'À', 'Á', 'Â', 'Ã', 'È', 'É', 'Ê', 'Ì', 'Í', 'Ò', 'Ó', 'Ô', 'Õ', 'Ù',
 			'Ú', 'Ý', 'à', 'á', 'â', 'ã', 'è', 'é', 'ê', 'ì', 'í', 'ò', 'ó', 'ô', 'õ', 'ù', 'ú', 'ý', 'Ă', 'ă', 'Đ',
 			'đ', 'Ĩ', 'ĩ', 'Ũ', 'ũ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ạ', 'ạ', 'Ả', 'ả', 'Ấ', 'ấ', 'Ầ', 'ầ', 'Ẩ', 'ẩ', 'Ẫ', 'ẫ',
@@ -48,9 +51,13 @@ public class HandleVietnamese {
 		}
 		return sb.toString().toLowerCase();
 	}
-	
+	public static String unAccent(String s) {
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replace("đ", "").toLowerCase();
+}
 	public static void main(String[] args) {
 	
-		System.out.println(removeAccent("Đặng Văn Quang Hà"));
+		System.out.println(unAccent("Đặng Văn Quang Hà"));
 	}
 }

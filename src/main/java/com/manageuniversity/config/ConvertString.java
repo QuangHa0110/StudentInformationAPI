@@ -5,11 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import kotlin.collections.ArrayDeque;
+import java.util.TimeZone;
 
 public class ConvertString {
+	
 	public static Date convetString(String s) {
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		try {
 			return new SimpleDateFormat("yyyy-MM-dd").parse(s);
 		} catch (ParseException e) {

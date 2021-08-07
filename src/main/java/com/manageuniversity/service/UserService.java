@@ -2,6 +2,8 @@ package com.manageuniversity.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,21 +32,15 @@ public class UserService {
 
 	private UserRepository usersRepository;
 
-	/** The roles repository. */
-
-	private RoleRepository rolesRepository;
-
 	/** The password encoder. */
 
 	private PasswordEncoder passwordEncoder;
+	private RoleRepository roleRepository;
 
-	
-
-	public UserService(UserRepository usersRepository, RoleRepository rolesRepository,
-			PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository usersRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
 		this.usersRepository = usersRepository;
-		this.rolesRepository = rolesRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.roleRepository = roleRepository;
 	}
 
 	/**
@@ -53,25 +49,34 @@ public class UserService {
 	 * @param users the users
 	 * @return the users
 	 */
-	public User createUsers(User users) {
+	public User createStaff(User users) {
 
 		if (usersRepository.findByUsername(users.getUsername()) != null) {
 			return null;
 		}
-		Role roles = rolesRepository.findByName("ROLE_STAFF");
-		users.setRole(roles);
+		Role roles = roleRepository.findByName("ROLE_STAFF");
+
+		Collection<Role> listRoles = new ArrayList<>();
+		listRoles.add(roles);
+
+		users.setRoles(listRoles);
+		Collection<User> listUsers = new ArrayList<>();
+		listUsers.add(users);
+		roles.setUsers(listUsers);
+
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
+
 		return usersRepository.save(users);
 
 	}
-	
+
 	public User createAdmin(User users) {
 		if (usersRepository.findByUsername(users.getUsername()) != null) {
 			return null;
 		}
-		Role roles = rolesRepository.findByName("ROLE_ADMIN");
-		users.setRole(roles);
-		users.setPassword(passwordEncoder.encode(users.getPassword()));
+		// Role roles = rolesRepository.findByName("ROLE_ADMIN");
+		// users.setRoles(roles);
+		// users.setPassword(passwordEncoder.encode(users.getPassword()));
 		return usersRepository.save(users);
 	}
 
@@ -120,7 +125,7 @@ public class UserService {
 	 */
 	public String forgotPassword(String email) {
 		Optional<User> userOptional = Optional.ofNullable(usersRepository.findByEmail(email));
-		
+
 		if (!userOptional.isPresent()) {
 			return null;
 		}
@@ -131,7 +136,6 @@ public class UserService {
 		users.setTokenCreationDate(LocalDateTime.now());
 
 		users = usersRepository.save(users);
-		
 
 		return users.getForgotPasswordToken();
 	}
@@ -194,30 +198,27 @@ public class UserService {
 
 		return diff.toMinutes() >= EXPIRE_TOKEN_AFTER_MINUTES;
 	}
-	
-	
+
 	/**
 	 * Change password.
 	 *
-	 * @param username the username
+	 * @param username    the username
 	 * @param oldPassword the old password
 	 * @param newPassword the new password
 	 * @return the response entity
 	 */
 	public ResponseEntity<String> changePassword(String username, String oldPassword, String newPassword) {
 		User users = usersRepository.findByUsername(username);
-		if(users == null) {
-			throw new ResourceNotFoundException(username+" not found in system");
-		}
-		else if(!passwordEncoder.matches(oldPassword, users.getPassword())) {
+		if (users == null) {
+			throw new ResourceNotFoundException(username + " not found in system");
+		} else if (!passwordEncoder.matches(oldPassword, users.getPassword())) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password incorrect");
-			
-		}else {
+
+		} else {
 			users.setPassword(passwordEncoder.encode(newPassword));
 			usersRepository.save(users);
 			return ResponseEntity.ok().body("Change password successful");
 		}
 	}
-	
 
 }

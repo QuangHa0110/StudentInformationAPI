@@ -37,6 +37,7 @@ public class PermissionController {
 
     @PostMapping("")
     public ResponseEntity<Permission> createPermission(@RequestBody Permission permission){
+        permission.setId(null);
         return permissionService.createPermission(permission);
     }
     

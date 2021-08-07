@@ -1,6 +1,6 @@
 package com.manageuniversity.entity;
 
-import java.util.Set;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,20 +17,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Permission {
 	@Id
 	@GeneratedValue
-	@Column(name = "id",nullable = false)
+	@Column(name = "id", nullable = false)
 	private Integer id;
-	
+
 	@Column(name = "name", nullable = false)
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
 
 	@ManyToMany(mappedBy = "permissions")
 	@JsonIgnore
-	private Set<Role> roles;
+	private Collection<Role> roles;
 
-	public Integer getId() {
+	
+	public Permission() {
+	}
+
+	public Permission(String name2) {
+    }
+
+    public Integer getId() {
 		return id;
 	}
 
@@ -54,16 +61,12 @@ public class Permission {
 		this.description = description;
 	}
 
-	public Set<Role> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
-	
-	
-	
-	
 
 }

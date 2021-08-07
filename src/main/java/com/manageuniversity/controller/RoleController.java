@@ -2,7 +2,9 @@ package com.manageuniversity.controller;
 
 import java.util.List;
 
+import com.manageuniversity.entity.Permission;
 import com.manageuniversity.entity.Role;
+import com.manageuniversity.exception.BadRequestException;
 import com.manageuniversity.service.RoleService;
 
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,6 +32,22 @@ public class RoleController {
     public List<Role> findAll() {
         return roleService.findAll();
     }
+
+    @PostMapping("/")
+    public ResponseEntity<String> addPermission(@RequestParam Integer role_id,@RequestParam Integer permission_id){
+        return roleService.addPermission(role_id, permission_id);
+    }
+
+    @PostMapping("/list")
+    public ResponseEntity<String> addListPermission(@RequestParam Integer role_id ,@RequestBody List<Permission> list){
+        if(list == null){
+            throw new BadRequestException("List permissions is empty");
+        }
+        else{
+            return roleService.addListPermission(role_id, list);
+        }
+    }
+
 
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")

@@ -12,5 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface PermissionRepository extends JpaRepository<Permission, Integer>, JpaSpecificationExecutor<Permission> {
 
     Page<Permission> findAll(Pageable pageable);
+
+    Permission findByName(String name);
     
 }

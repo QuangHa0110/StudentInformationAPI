@@ -1,9 +1,7 @@
 package com.manageuniversity.entity;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,24 +20,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable =  false)
+	@Column(name = "id", nullable = false)
 	private Integer id;
-	
-	@Column(name = "name", nullable =  false)
-	private String name;
-	
-	@OneToMany( mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<User> users;
 
-	@ManyToMany
-	@JoinTable(
-		name = "role_permission",
-		joinColumns = @JoinColumn(name="role_id"),
-		inverseJoinColumns = @JoinColumn(name="permission_id")
-	)
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@ManyToMany(mappedBy = "roles")
 	@JsonIgnore
-	private Set<Permission> permissions;
+	private Collection<User> users;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+	@JsonIgnore
+	private Collection<Permission> permissions;
 
 	public Integer getId() {
 		return id;
@@ -58,24 +51,20 @@ public class Role {
 		this.name = name;
 	}
 
-	public List<User> getUsers() {
+	public Collection<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(Collection<User> users) {
 		this.users = users;
 	}
 
-	public Set<Permission> getPermissions() {
+	public Collection<Permission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(Set<Permission> permissions) {
+	public void setPermissions(Collection<Permission> permissions) {
 		this.permissions = permissions;
 	}
-	
-	
-	
-	
 
 }

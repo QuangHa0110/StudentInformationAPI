@@ -36,7 +36,7 @@ public class StudentController {
 	}
 
 	@GetMapping("")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+	@PreAuthorize("hasPermission('read_all_student')")
 	public List<StudentDTO> findAll(@RequestParam(required = false) List<List<String>> requestList,
 
 			@RequestParam(name = "page-number", required = false, defaultValue = "0") Integer pageNumber,

@@ -56,8 +56,10 @@ public class UserController {
 		users.setRegisterDate(LocalDateTime.now());
 		users.setEmail(registrationRequest.getEmail());
 		users.setFullName(registrationRequest.getFullName());
+		
 
-		if (usersService.createUsers(users) != null) {
+		if (usersService.createStaff(users) != null) {
+			System.out.println("************** controller");
 			return ResponseEntity.ok("Register successful");
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is created");
@@ -75,7 +77,7 @@ public class UserController {
 		users.setEmail(request.getEmail());
 		users.setFullName(request.getFullName());
 
-		if (usersService.createUsers(users) != null) {
+		if (usersService.updateUsers(users) != null) {
 			return ResponseEntity.ok("Register successful");
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is created");

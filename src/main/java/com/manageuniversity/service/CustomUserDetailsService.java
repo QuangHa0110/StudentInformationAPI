@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Cacheable(cacheNames = "user", key = "#username")
 	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User users = userService.findByUsername(username);
-		return CustomUserDetails.fromUserEntityToCustomUserDetails(users);
+		return CustomUserDetails.createCustomUserDetails(users);
 	}
 	
 

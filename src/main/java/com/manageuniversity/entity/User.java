@@ -1,6 +1,7 @@
 package com.manageuniversity.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,52 +10,55 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
 
 public class User {
 	@Id
-	@GeneratedValue(strategy =GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, unique = true)
 	private Integer id;
-	
+
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
-	
+
 	@Column(name = "password", nullable = false, unique = true)
 	private String password;
-	
+
 	@Column(name = "fullname")
 	private String fullName;
-	
+
 	@Column(name = "email", unique = true)
 	private String email;
-	
+
 	@Column(name = "last_login_date")
 	private LocalDateTime lastLoginDate;
-	
+
 	@Column(name = "lock_out_date")
 	private LocalDateTime lockOutDate;
-	
+
 	@Column(name = "login_failed_count")
 	private Integer loginFailedCount;
-	
+
 	@Column(name = "register_date")
 	private LocalDateTime registerDate;
-	
+
 	@Column(name = "forgot_password_token")
 	private String forgotPasswordToken;
-	
+
 	@Column(name = "token_creation_date")
 	private LocalDateTime tokenCreationDate;
 
-	@ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id", nullable =  false)
-	private Role role;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@JsonIgnore
+	private Collection<Role> roles;
 
 	public Integer getId() {
 		return id;
@@ -144,16 +148,12 @@ public class User {
 		this.tokenCreationDate = tokenCreationDate;
 	}
 
-	public Role getRole() {
-		return role;
+	public Collection<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
-	
-	
-	
-
 
 }

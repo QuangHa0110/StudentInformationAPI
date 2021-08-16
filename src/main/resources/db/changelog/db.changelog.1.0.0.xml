@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="Quang Ha (generated)" id="1628349488156-1">
+        <createSequence sequenceName="class_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-2">
+        <createSequence sequenceName="course_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-3">
+        <createSequence sequenceName="event_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-4">
+        <createSequence sequenceName="exam_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-5">
+        <createSequence sequenceName="exam_result_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-6">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-7">
+        <createSequence sequenceName="plan_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-8">
+        <createSequence sequenceName="roles_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-9">
+        <createSequence sequenceName="student_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-10">
+        <createSequence sequenceName="teacher_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-11">
+        <createSequence sequenceName="users_id_seq"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-12">
+        <createTable tableName="class">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="class_pkey"/>
+            </column>
+            <column name="end_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="course_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teacher_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-13">
+        <createTable tableName="course">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="course_pkey"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-14">
+        <createTable tableName="event">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="event_pkey"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="happen_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="class_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-15">
+        <createTable tableName="exam">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="exam_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="course_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-16">
+        <createTable tableName="exam_result">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="exam_result_pkey"/>
+            </column>
+            <column name="note" type="VARCHAR(2000)"/>
+            <column name="result_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="score" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="class_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="exam_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-17">
+        <createTable tableName="permission">
+            <column name="id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-18">
+        <createTable tableName="plan">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="plan_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="course_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-19">
+        <createTable tableName="registration">
+            <column name="class_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="register_day" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-20">
+        <createTable tableName="role_permission">
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-21">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-22">
+        <createTable tableName="student">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="student_pkey"/>
+            </column>
+            <column name="address" type="VARCHAR(250)"/>
+            <column name="birthday" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="create_date" type="TIMESTAMP(29) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="facebook" type="VARCHAR(100)"/>
+            <column name="full_name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note" type="VARCHAR(2000)"/>
+            <column name="phone" type="VARCHAR(15)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-23">
+        <createTable tableName="teacher">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="teacher_pkey"/>
+            </column>
+            <column name="address" type="VARCHAR(250)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="full_name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="grade" type="VARCHAR(20)"/>
+            <column name="phone" type="VARCHAR(15)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-24">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="forgot_password_token" type="VARCHAR(255)"/>
+            <column name="fullname" type="VARCHAR(255)"/>
+            <column name="last_login_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="lock_out_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="login_failed_count" type="INT"/>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="register_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="token_creation_date" type="TIMESTAMP(29) WITHOUT TIME ZONE"/>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-25">
+        <createTable tableName="users_roles">
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-26">
+        <addPrimaryKey columnNames="id" constraintName="permission_pkey" tableName="permission"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-27">
+        <addPrimaryKey columnNames="class_id, student_id" constraintName="registration_pkey" tableName="registration"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-28">
+        <addUniqueConstraint columnNames="email" constraintName="uk_6dotkott2kjsp8vw4d0m25fb7" tableName="users"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-29">
+        <addUniqueConstraint columnNames="username" constraintName="uk_r43af9ap4edm43mmtq01oddj6" tableName="users"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-30">
+        <addUniqueConstraint columnNames="password" constraintName="uk_r53o2ojjw4fikudfnsuuga336" tableName="users"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-31">
+        <addForeignKeyConstraint baseColumnNames="teacher_id" baseTableName="class" constraintName="fk28f8ba9n0feejnamfay479ae1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teacher"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-32">
+        <addForeignKeyConstraint baseColumnNames="class_id" baseTableName="registration" constraintName="fk2clgdka89j74gpdd6ql8wsyau" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="class"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-33">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="users_roles" constraintName="fk2o0jvgh89lemvvo17cbqvdxaa" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-34">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="registration" constraintName="fkcxvegulu1x4mjcvy3116tu5xu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-35">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="role_permission" constraintName="fkf8yllw1ecvwqy3ehyxawqa1qp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="permission"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-36">
+        <addForeignKeyConstraint baseColumnNames="course_id" baseTableName="plan" constraintName="fkhmvwnqji8tr7771d0hgcbv25q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="course"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-37">
+        <addForeignKeyConstraint baseColumnNames="course_id" baseTableName="exam" constraintName="fkiub3ue9cklcyyra24v9ns656n" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="course"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-38">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_roles" constraintName="fkj6m8fwv7oqv74fcehir1a9ffy" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-39">
+        <addForeignKeyConstraint baseColumnNames="class_id" baseTableName="exam_result" constraintName="fkjejqyvy94r334jml9mmobv7f6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="class"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-40">
+        <addForeignKeyConstraint baseColumnNames="class_id" baseTableName="event" constraintName="fkkqtw8xsbsbfi12psyh4txu0s4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="class"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-41">
+        <addForeignKeyConstraint baseColumnNames="course_id" baseTableName="class" constraintName="fklsxcyh4sq20727qj0clvah8dg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="course"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-42">
+        <addForeignKeyConstraint baseColumnNames="exam_id" baseTableName="exam_result" constraintName="fkmblvyjlk9x7rrm7mvqtbedycc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="exam"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-43">
+        <addForeignKeyConstraint baseColumnNames="student_id" baseTableName="exam_result" constraintName="fkqammetxqjhntvcu0d0iodbvhg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="student"/>
+    </changeSet>
+    <changeSet author="Quang Ha (generated)" id="1628349488156-44">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_permission" constraintName="fktfgq8q9blrp0pt1pvggyli3v9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles"/>
+    </changeSet>
+</databaseChangeLog>
